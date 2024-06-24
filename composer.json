@@ -1,0 +1,11 @@
+{
+    "name": "cli/app",
+    "description": "This is my first cli application",
+    "authors": [
+        {
+            "name": "Azizul Islam",
+            "email": "cseazizul@gmail.com"
+        }
+    ],
+    "require": {}
+}

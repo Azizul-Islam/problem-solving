@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "type": "income",
+        "name": "Business Profit"
+    },
+    {
+        "id": 2,
+        "type": "expense",
+        "name": "Salary"
+    }
+]
