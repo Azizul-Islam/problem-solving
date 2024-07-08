@@ -3,21 +3,21 @@ session_start();
 require 'helpers.php';
 
 $errors = [];
-$name = $email = $password = $confirm_password = '';
-
+$data = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    $data['id'] = uniqid();
     if (empty($_POST['name'])) {
         $errors['name'] = 'Name field is required.';
     } else {
-        $name = sanitize($_POST['name']);
+        $data['name'] = sanitize($_POST['name']);
     }
     if (empty($_POST['email'])) {
         $errors['email'] = 'Email field is required.';
     } else {
-        $email = sanitize($_POST['email']);
+        $data['email'] = sanitize($_POST['email']);
 
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Please provide a valid email address.';
         }
     }
@@ -27,16 +27,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors['password'] = 'Please provide a password longer than 8 characters.';
     } else {
         $password = sanitize($_POST['password']);
+    }
+
+    if (empty($_POST['confirm_password'])) {
+        $errors['confirm_password'] = 'Confirm password field is required.';
+    } else {
         $confirm_password = sanitize($_POST['confirm_password']);
         if ($password !== $confirm_password) {
             $errors['confirm_password'] = 'Password & confirm password dose not match!';
         }
-        $password = password_hash($password, PASSWORD_DEFAULT);
+        $data['password'] = password_hash($password, PASSWORD_DEFAULT);
     }
 
+
+
     if (empty($errors)) {
-        flash('success', 'Account created successfully, Please login');
-        header('Location:login.php');
+
+        $users = readFileData('./data/users.json');
+        // Prompt the user for income data
+        if (!empty($data)) {
+            $users[] = $data;
+            $newJsonString = json_encode($users, JSON_PRETTY_PRINT);
+
+            file_put_contents('./data/users.json', $newJsonString);
+            flash('success', 'Account created successfully, Please login.');
+            header('Location:login.php');
+        }
     }
 }
 

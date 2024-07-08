@@ -1,0 +1,38 @@
+[
+    {
+        "id": 1,
+        "name": "Azizul Islam",
+        "email": "cseazizul@gmail.com",
+        "password": "password"
+    },
+    {
+        "id": 2,
+        "name": "Declan Duncan",
+        "email": "lipur@mailinator.com",
+        "password": "$2y$10$syxdZ\/F8l4NTW5N1KNiWUe\/estbHBruLy5R36zkFIjdIlk0Bcdfd2"
+    },
+    {
+        "id": 3,
+        "name": "Christian Gibson",
+        "email": "jekum@mailinator.com",
+        "password": "$2y$10$lg2p8X300G0mKrAi.gyimOhqV4JQcJDakYWTnRfO4vmz5y1tGoPY."
+    },
+    {
+        "id": "668aa54060094",
+        "name": "Marsden West",
+        "email": "jimixiguji@mailinator.com",
+        "password": "$2y$10$dyewmkyqkQo5gVrEvpgH7O\/5cqJBuxI..9lgKa5sdEx\/5T3YNB3N2"
+    },
+    {
+        "id": "668aa5759a78b",
+        "name": "Jada Dawson",
+        "email": "pihacaze@mailinator.com",
+        "password": "$2y$10$CCfoXLPWXzktABY9XFMemuSDr8TvSWUHf.aOQaptEcqYJLHtO.oJa"
+    },
+    {
+        "id": "668c1e4ccdb71",
+        "name": "Test",
+        "email": "test@gmail.com",
+        "password": "$2y$10$V50RHYM02uyqe50N.VK4uu1Vs5Of\/7I4LfrdqKbYagQyHGk8oWopO"
+    }
+]

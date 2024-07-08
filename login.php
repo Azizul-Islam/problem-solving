@@ -1,7 +1,55 @@
 <!DOCTYPE html>
 <?php
 session_start();
+
+// Redirect to dashboard if user is already logged in
+if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
+    header("Location: dashboard.php");
+    exit;
+}
 require 'helpers.php';
+
+$errors = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (empty($_POST['email'])) {
+        $errors['email'] = 'Email field is required.';
+    } else {
+        $email = sanitize($_POST['email']);
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $errors['email'] = 'Please provide a valid email address.';
+        }
+    }
+    if (empty($_POST['password'])) {
+        $errors['password'] = 'Password field is required.';
+    } else {
+        $password = sanitize($_POST['password']);
+        // $password = password_hash($password, PASSWORD_DEFAULT);
+    }
+    $authenticatedUser = null;
+    if (empty($errors)) {
+        $users = readFileData('./data/users.json');
+        foreach ($users as $user) {
+            if ($user['email'] === $email) {
+                // Check if the provided password matches the stored hashed password
+                if (password_verify($password, $user['password'])) {
+                    $authenticatedUser = $user;
+                    break;
+                }
+            }
+        }
+        print_r($authenticatedUser);
+        // Check if a user was found and authenticated
+        if ($authenticatedUser) {
+            flash('success', 'Login successful! Welcome, ' . htmlspecialchars($authenticatedUser['name']) . '!');
+            $_SESSION['user'] = $authenticatedUser;
+            header("Location: dashboard.php");
+            // exit;
+        } else {
+            $errors['password'] = 'Invalid email or password!';
+        }
+    }
+}
 
 ?>
 <html lang="en">
@@ -88,11 +136,14 @@ require 'helpers.php';
                         </div>
 
                         <div class="mt-10 mx-auto w-full max-w-xl">
-                            <form class="space-y-6" action="#" method="POST">
+                            <form class="space-y-6" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="POST" novalidate autocomplete="off">
                                 <div>
                                     <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
                                     <div class="mt-2">
                                         <input id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <?php if (isset($errors['email'])) : ?>
+                                            <p class="text-xs text-red-600 mt-2"><?= $errors['email']; ?></p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
@@ -105,6 +156,9 @@ require 'helpers.php';
                                     </div>
                                     <div class="mt-2">
                                         <input id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                        <?php if (isset($errors['password'])) : ?>
+                                            <p class="text-xs text-red-600 mt-2"><?= $errors['password']; ?></p>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
 
