@@ -7,6 +7,15 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
     exit;
 }
 
+// Get the protocol (HTTP or HTTPS)
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+
+// Get the host (domain or IP address)
+$host = $_SERVER['HTTP_HOST'];
+
+// Combine all parts to form the full URL
+$url = $protocol . $host . "/feedback.php" . "?user_id=" . htmlspecialchars($_SESSION['user']['id']) . "&name=" . htmlspecialchars($_SESSION['user']['name']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,7 +83,7 @@ if (!isset($_SESSION['user']) || empty($_SESSION['user'])) {
 
             <div class="relative max-w-7xl mx-auto">
                 <div class="flex justify-end">
-                    <span class="block text-gray-600 font-mono border border-gray-400 rounded-xl px-2 py-1">Your feedback form link: <strong>http://localhost/feedback/sYu24jl</strong></span>
+                    <span class="block text-gray-600 font-mono border border-gray-400 rounded-xl px-2 py-1">Your feedback form link: <a href="<?= $url ?>"><?= $url ?></a></span>
                 </div>
                 <h1 class="text-xl text-indigo-800 text-bold my-10">Received feedback</h1>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
+require 'helpers.php';
 
 // Redirect to dashboard if user is already logged in
 if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
