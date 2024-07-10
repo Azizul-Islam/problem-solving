@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         file_put_contents('./data/feedbacks.json', $newJsonString);
         flash('success', 'Feedback submit success.');
+        header("Location: feedback-success.php");
     }
 }
 

@@ -8,7 +8,6 @@ if (isset($_SESSION['user']) && !empty($_SESSION['user'])) {
     header("Location: dashboard.php");
     exit;
 }
-require 'helpers.php';
 
 $errors = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
-        print_r($authenticatedUser);
         // Check if a user was found and authenticated
         if ($authenticatedUser) {
             flash('success', 'Login successful! Welcome, ' . htmlspecialchars($authenticatedUser['name']) . '!');
